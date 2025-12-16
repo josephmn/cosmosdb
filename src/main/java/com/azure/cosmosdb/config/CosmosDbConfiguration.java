@@ -4,19 +4,21 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@RequiredArgsConstructor
 public class CosmosDbConfiguration extends AbstractCosmosConfiguration {
 
-    private static final String DATABASE_NAME = "cosmosdb";
+    private final PropertiesCosmosDb propertiesCosmosDb;
 
     @Bean
     public CosmosAsyncClient cosmosAsyncClient() {
         return new CosmosClientBuilder()
-            .endpoint("https://localhost:8081")
-            .key("C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==")
+            .endpoint(this.propertiesCosmosDb.getUri())
+            .key(this.propertiesCosmosDb.getKey())
             .consistencyLevel(ConsistencyLevel.EVENTUAL)
             .connectionSharingAcrossClientsEnabled(true)
             // Elige uno: directMode() o gatewayMode(). Aquí uso directMode().
@@ -28,6 +30,6 @@ public class CosmosDbConfiguration extends AbstractCosmosConfiguration {
 
     @Override
     protected String getDatabaseName() {
-        return DATABASE_NAME;
+        return this.propertiesCosmosDb.getDatabase();
     }
 }
