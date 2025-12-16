@@ -16,5 +16,6 @@ server:
 
 logging:
   level:
-    com.azure.cosmos: DEBUG
-    org.springframework.data.cosmos: DEBUG
+    root: INFO
+#    com.azure.cosmos: DEBUG
+#    org.springframework.data.cosmos: DEBUG
